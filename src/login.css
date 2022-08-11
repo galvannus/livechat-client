@@ -1,0 +1,36 @@
+.login_body{
+    height: 100vh;
+    width: 100vw;
+    background: #30e8bf; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #30e8bf, #ff8235); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #30e8bf, #ff8235); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+
+/*Center section*/
+.login_body section{
+    width: 40%;
+    min-height: 10rem;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+}
+
+/*Center h1*/
+.center h1 {
+    text-align: center;
+    padding: 0 0 2rem 0;
+    border-bottom: 0.1rem solid silver;
+}
+
+/*Center form*/
+.center form {
+    padding: 0 2rem;
+}
+
+/*Center .txt_field*/
+form .txt_field {
+    text-align: center;
+    border-bottom: 0.2rem solid #adadad;
+    margin: 2rem 0;
+}
