@@ -1,14 +1,19 @@
-import { useState } from 'react';
+import { useState, useContext, Fragment } from 'react';
+import chatContext from '../../context/chats/chatContext';
 
 const NewChat = () => {
 
+    //Extract chats of initial state
+    const chatsContext = useContext(chatContext);
+    const { errorsearchform, addChat, showError } = chatsContext;
+
     //State of Chat
     const [chat, saveChat] = useState({
-        search: ''
+        name: ''
     });
 
     //Extract name of person to chat
-    const { search } = chat;
+    const { name } = chat;
 
     //Read contect of inputs
     const onChangeChat = e => {
@@ -23,28 +28,39 @@ const NewChat = () => {
         e.preventDefault();
 
         //Validate Chat
+        if( name === ''){
+            showError();
+            return;
+        }
 
         //Add chat to state
+        addChat(chat);
 
         //Reload form
+        saveChat({
+            name: ''
+        })
     }
 
     return(
-        <form
-            className="search_container"
-            onSubmit={onSubmitChat}
-        >
-            <input
-                className="search_input"
-                type="search"
-                id="search"
-                name="search"
-                placeholder="search..."
-                value={search}
-                onChange={onChangeChat}
-            />
-            <button type="submit"><i className="fa-solid fa-magnifying-glass"></i></button>
-        </form>
+        <Fragment>
+            <form
+                className="search_container"
+                onSubmit={onSubmitChat}
+            >
+                <input
+                    className="search_input"
+                    type="search"
+                    id="search"
+                    name="name"
+                    placeholder="search..."
+                    value={name}
+                    onChange={onChangeChat}
+                />
+                <button type="submit"><i className="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            { errorsearchform ? <p>The name is required</p> : null}
+        </Fragment>
     );
 }
 

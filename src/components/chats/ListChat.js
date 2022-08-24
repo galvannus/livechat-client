@@ -12,20 +12,21 @@ const ListChats = () => {
     //Get proyects when load the component
     useEffect( () => {
         getChats();
+        // eslint-disable-next-line
     }, []);
 
     //Verify if the chats has content
     if( chats.length === 0) return null;
 
     return(
-        <div className="list_chats">
-            {chats.map(chat => (
-                <Chat
-                    key={chat.chat_id}
-                    chat={chat}
-                />
-            ))}
-        </div>
+        
+        chats.map(chat => (
+            <Chat
+                key={chat.id}
+                chat={chat}
+            />
+        ))
+        
     );
 }
 

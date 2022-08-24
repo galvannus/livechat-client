@@ -1,6 +1,6 @@
 import { useReducer } from "react";
-import alertReducer from './alertReducer';
-import alertContext from './alertContext';
+import AlertReducer from './alertReducer';
+import AlertContext from './alertContext';
 
 import { SHOW_ALERT, HIDE_ALERT } from "../../types";
 
@@ -10,7 +10,7 @@ const AlertState = props => {
         alert: null
     }
 
-    const [ state, dispatch ] = useReducer(alertReducer, initialState);
+    const [ state, dispatch ] = useReducer(AlertReducer, initialState);
 
     //Functions
     const showAlert = (msg, category) => {
@@ -22,6 +22,7 @@ const AlertState = props => {
             }
         });
 
+        //After 5 seconds clear the alert
         setTimeout(() => {
             dispatch({
                 type: HIDE_ALERT
@@ -30,14 +31,14 @@ const AlertState = props => {
     }
 
     return (
-        <alertContext.Provider
+        <AlertContext.Provider
             value={{
                 alert: state.alert,
                 showAlert
             }}
         >
             {props.children}
-        </alertContext.Provider>
+        </AlertContext.Provider>
     )
 }
 

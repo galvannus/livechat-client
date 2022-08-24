@@ -1,6 +1,26 @@
-import { useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
+import AlertContext from '../../context/alerts/alertContext';
+import AuthContext from '../../context/authentication/authContext';
 
-const NewAccount = () => {
+const NewAccount = (props) => {
+
+    //Extract values of context
+    const alertContext = useContext(AlertContext);
+    const { alert, showAlert } = alertContext;
+
+    const authContext = useContext(AuthContext);
+    const { message, authenticated, registerUser } = authContext;
+
+    //If the user is authenticated
+    useEffect(()=> {
+        if(authenticated){
+            props.history.push('/chats');
+        }
+
+        if(message){
+            showAlert(message.msg, message.category);
+        }
+    }, [message, authenticated, props.history]);
 
     //State for Register User
     const [user, saveUser] = useState({
@@ -29,16 +49,37 @@ const NewAccount = () => {
         e.preventDefault();
 
         //Validate fileds voids
+        if( email.trim() === '' || password.trim() === '' || firstName.trim() === '' || lastName.trim() === '' || confirmPassword.trim() === '' ){
+            showAlert('All fields are required', 'alert-error');
+            return;
+        }
 
         //Password minimun 6 characters
+        if( password.length < 6 ){
+            showAlert('The Maximun length for the password are 6 characters','alert-error');
+            return;
+        }
 
         //Validate passwords fields to be equals
+        if(password !== confirmPassword){
+            showAlert('The password is diferrent to confirm password','alert-error');
+            return;
+        }
 
         //Send to action
+        registerUser({
+            firstName,
+            lastName,
+            email,
+            password,
+            role,
+            canSave
+        })
     }
 
     return(
         <main className="login_body">
+            { alert ? (<div>{alert.msg}</div>) : null }
             <section className="center">
                 <h1>New Account</h1>
                 <form

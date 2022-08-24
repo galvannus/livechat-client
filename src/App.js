@@ -5,19 +5,26 @@ import Chats from './components/chats/Chats';
 
 import ChatState from  './context/chats/chatState';
 import AlertState from './context/alerts/alertState';
+import MessageState from './context/messages/messageState';
+import AuthState from './context/authentication/authState';
 
 function App() {
+
   return (
     <ChatState>
-      <AlertState>
-        <Router>
-          <Routes>
-            <Route exact path="/" element={<Login/>} />
-            <Route exact path="/chats" element={<Chats/>} />
-            <Route exact path="/new-account" element={<NewAccount/>} />
-          </Routes>
-        </Router>
-      </AlertState>
+      <MessageState>
+        <AlertState>
+          <AuthState>
+            <Router>
+              <Routes>
+                <Route exact path="/" element={<Login/>} />
+                <Route exact path="/chats" element={<Chats/>} />
+                <Route exact path="/new-account" element={<NewAccount/>} />
+              </Routes>
+            </Router>
+          </AuthState>
+        </AlertState>
+      </MessageState>
     </ChatState>
   );
 }

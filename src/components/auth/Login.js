@@ -1,6 +1,26 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import AlertContext from '../../context/alerts/alertContext';
+import AuthContext from '../../context/authentication/authContext';
 
-const Login = () => {
+const Login = (props) => {
+
+    //Extract values of context
+    const alertContext = useContext(AlertContext);
+    const { alert, showAlert } = alertContext;
+
+    const authContext = useContext(AuthContext);
+    const { message, authenticated, login } = authContext;
+
+    //If the user doesn't exist
+    useEffect(()=> {
+        /* if(authenticated){
+            props.history.push('/chats');
+        } */
+
+        if(message){
+            showAlert(message.msg, message.category);
+        }
+    }, [message, authenticated, props.history]);
 
     //State for login
     const [user, saveUser] = useState({
@@ -24,12 +44,17 @@ const Login = () => {
         e.preventDefault();
 
         //Validate fileds voids
+        if(email.trim() === '' || password.trim() === ''){
+            showAlert('All fields are required.', 'alerta-error');
+        }
 
         //Send to action
+        login({ email, password });
     }
     
     return(
         <main className="login_body">
+            { alert ? (<div>{alert.msg}</div>) : null }
             <section className="center">
                 <h1>Login</h1>
                 <form
@@ -38,7 +63,6 @@ const Login = () => {
                     <div className="txt_field">
                         <input
                             type="email"
-                            required
                             id="email"
                             name="email"
                             placeholder="Tu Email"
@@ -50,7 +74,6 @@ const Login = () => {
                     <div className="txt_field">
                         <input
                             type="password"
-                            required
                             id="password"
                             name="password"
                             placeholder="Tu Password"
