@@ -7,6 +7,14 @@ import ChatState from  './context/chats/chatState';
 import AlertState from './context/alerts/alertState';
 import MessageState from './context/messages/messageState';
 import AuthState from './context/authentication/authState';
+import authToken from './config/token';
+import PrivateRoute from './components/routes/PrivateRoutes';
+
+//Verify if token exist
+const token = localStorage.getItem('token');
+if(token){
+  authToken(token);
+}
 
 function App() {
 
@@ -18,7 +26,9 @@ function App() {
             <Router>
               <Routes>
                 <Route exact path="/" element={<Login/>} />
-                <Route exact path="/chats" element={<Chats/>} />
+                <Route element={<PrivateRoute/>}>
+                  <Route exact path="/chats" element={<Chats/>} />
+                </Route>
                 <Route exact path="/new-account" element={<NewAccount/>} />
               </Routes>
             </Router>

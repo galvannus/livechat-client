@@ -27,9 +27,14 @@
 .search_container {
     border-bottom: 0.1rem solid var(--line-gray);
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     height: 5rem;
+    position: relative;
+}
+
+.container-newchat{
+    width: 100%;
 }
 
 .search_input {
@@ -41,6 +46,19 @@
     border-radius: 0.5rem;
     outline: none;/*Remove focus border effect*/
     background-color: var(--line-gray);
+}
+
+.search_container:hover .usersList{
+    display: block;
+}
+
+.usersList {
+    display: none;
+    list-style-type: none;
+    background-color: white;
+    cursor: pointer;
+    position: absolute;
+    z-index: 50;
 }
 
 .list_chats {

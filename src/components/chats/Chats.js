@@ -1,7 +1,10 @@
+import { useContext, useEffect } from 'react';
 import Sidebar from '../layout/Sidebar';
 import Messages from '../messages/Messages';
 
+
 const Chats = () => {
+
     return(
         <div className="container_app">
             <Sidebar/>

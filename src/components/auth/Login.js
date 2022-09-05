@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AlertContext from '../../context/alerts/alertContext';
 import AuthContext from '../../context/authentication/authContext';
 
@@ -9,18 +10,25 @@ const Login = (props) => {
     const { alert, showAlert } = alertContext;
 
     const authContext = useContext(AuthContext);
-    const { message, authenticated, login } = authContext;
+    const { message, authenticated, login, userAuthenticated } = authContext;
+
+    //Redirect function
+    const navigate = useNavigate();
 
     //If the user doesn't exist
     useEffect(()=> {
-        /* if(authenticated){
-            props.history.push('/chats');
-        } */
+        
+        userAuthenticated();
+        
+        if(authenticated){
+            //Redirect to chats
+            navigate('/chats');
+        }
 
         if(message){
             showAlert(message.msg, message.category);
         }
-    }, [message, authenticated, props.history]);
+    }, [message, authenticated]);
 
     //State for login
     const [user, saveUser] = useState({

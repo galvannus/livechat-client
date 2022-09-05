@@ -48,18 +48,27 @@ const NewChat = () => {
                 className="search_container"
                 onSubmit={onSubmitChat}
             >
-                <input
-                    className="search_input"
-                    type="search"
-                    id="search"
-                    name="name"
-                    placeholder="search..."
-                    value={name}
-                    onChange={onChangeChat}
-                />
-                <button type="submit"><i className="fa-solid fa-magnifying-glass"></i></button>
+                <div className="container-newchat">
+                    <input
+                        className="search_input"
+                        type="search"
+                        id="search"
+                        name="name"
+                        placeholder="search..."
+                        value={name}
+                        onChange={onChangeChat}
+                    />
+                    {/*<button type="submit"><i className="fa-solid fa-magnifying-glass"></i></button>*/}
+                    <ul className="usersList padding_left_10">
+                        <li>Jorge MArcial</li>
+                        <li>Jorge MArcial</li>
+                        <li>Jorge MArcial</li>
+                        <li>Jorge MArcial</li>
+                    </ul>
+                </div>
             </form>
             { errorsearchform ? <p>The name is required</p> : null}
+            
         </Fragment>
     );
 }

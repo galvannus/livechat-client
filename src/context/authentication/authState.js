@@ -1,4 +1,4 @@
-import { Children, useReducer } from "react";
+import { Children, useReducer, useEffect } from "react";
 import AuthContext from "./authContext";
 import AuthReducer from './authReducer';
 import axiosClient from '../../config/axios';
@@ -19,23 +19,28 @@ import {
         token: localStorage.getItem('token'),
         authenticated: null,
         user: null,
-        message: null
+        message: null,
+        loading: true
     }
 
     const [ state, dispatch ] = useReducer(AuthReducer, initialState);
+
+    /* useEffect(() => {
+        //Get user
+        userAuthenticated();
+    },[]); */
 
     //Functions
     const registerUser = async data => {
 
         try {
             const response = await axiosClient.post('/api/users', data);
-            console.log(response);
-            /*dispatch({
+            dispatch({
                 type: SUCCESSFUL_REGISTER,
                 payload: response.data
-            })*/
+            })
         } catch (error) {
-            //console.log(error.response.data.msg);
+            console.log(error.response.data.msg);
 
             const alert = {
                 msg: error.response.data.msg,
@@ -52,14 +57,15 @@ import {
     //return user authenticated
     const userAuthenticated = async () => {
         const token = localStorage.getItem('token');
-        if(token){
-            authToken(token);
+        
+        if(!token){
+            return
         }
+        authToken(token);
 
         try {
             const response = await axiosClient.get('/api/auth');
-            console.log(response);
-
+            
             dispatch({
                 type: GET_USER,
                 payload: response.data.user
@@ -75,18 +81,35 @@ import {
         }
     }
 
+
     //When user login
     const login = async data => {
         try {
             const response = await axiosClient.post('/api/auth', data);
-            console.log(response.data);
+            
+            const tokenCraeted = response.data.token;
+
+            /* new Promise( async (resolve, reject) => {
+                console.log("Entró promise");
+                await dispatch({
+                    type: SUCCESSFUL_LOGIN,
+                    payload: response.data.token
+                });
+                await resolve();
+            })
+            .then(() => {
+                console.log("Entró then");
+                //Get user
+                userAuthenticated();
+            })
+            .catch(() => {
+                console.log("Problemas con el token.")
+            }) */
+
             dispatch({
                 type: SUCCESSFUL_LOGIN,
-                payload: response.data
-            });
-
-            //Get user
-            userAuthenticated();
+                payload: response.data.token
+            }); 
 
         } catch (error) {
             console.log(error.response.data.msg);
@@ -102,6 +125,13 @@ import {
         }
     }
 
+    //Close Use session
+    const logout = () => {
+        dispatch({
+            type: LOG_OUT
+        })
+    }
+
     return(
         <AuthContext.Provider
             value={{
@@ -109,8 +139,11 @@ import {
                 authenticated: state.authenticated,
                 user: state.user,
                 message: state.message,
+                loading: state.loading,
                 registerUser,
-                login
+                login,
+                userAuthenticated,
+                logout
             }}
         >
             {props.children}

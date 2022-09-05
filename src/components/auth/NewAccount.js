@@ -1,6 +1,8 @@
 import { useContext, useState, useEffect } from 'react';
 import AlertContext from '../../context/alerts/alertContext';
 import AuthContext from '../../context/authentication/authContext';
+import axiosClient from '../../config/axios';
+import authToken from '../../config/token';
 
 const NewAccount = (props) => {
 
@@ -13,9 +15,7 @@ const NewAccount = (props) => {
 
     //If the user is authenticated
     useEffect(()=> {
-        if(authenticated){
-            props.history.push('/chats');
-        }
+        getRolList();
 
         if(message){
             showAlert(message.msg, message.category);
@@ -30,11 +30,12 @@ const NewAccount = (props) => {
         password: '',
         confirmPassword: '',
         role: '',
-        canSave: ''
+        canSaveMessages: false,
+        roleList: ''
     });
 
     //Extract user
-    const { email, password, firstName, lastName, role, canSave, confirmPassword } = user;
+    const { email, password, firstName, lastName, role, canSaveMessages, confirmPassword, roleList } = user;
 
 
     const onChange = e => {
@@ -73,8 +74,30 @@ const NewAccount = (props) => {
             email,
             password,
             role,
-            canSave
-        })
+            canSaveMessages
+        });
+    }
+
+    //Get roles of users
+    const getRolList = async () => {
+        const token = localStorage.getItem('token');
+
+        try {
+            const response = await axiosClient.get('/api/roles');
+            
+            if(message){
+                showAlert(message.msg, message.category);
+            }
+
+            saveUser({
+                ...user,
+                roleList: response.data.roleList,
+                role: response.data.roleList[0]._id
+            });
+
+        } catch (error) {
+            console.log(error.response.data.msg);
+        }
     }
 
     return(
@@ -135,7 +158,7 @@ const NewAccount = (props) => {
                     </div>
                     <div className="txt_field">
                         <input
-                            type="confirmPassword"
+                            type="password"
                             required
                             id="confirmPassword"
                             name="confirmPassword"
@@ -146,25 +169,22 @@ const NewAccount = (props) => {
                         <label>Confirm Password</label>
                     </div>
                     <div className="txt_field">
-                        <input
-                            type="role"
-                            required
-                            id="role"
-                            name="role"
-                            value={role}
-                            onChange={onChange}
-                            />
+                        <select id="role" name="role" onChange={onChange} defaultValue={role}>
+                            {roleList.length === 0
+                            
+                                ? (<option key="vacio" value="">No se encontro ningún rol</option>)
+                                : roleList.map(role => (
+                                    (<option key={role._id} value={role._id}>{role.name}</option>)
+                                ))
+                            }
+                        </select>
                         <label>Role</label>
                     </div>
                     <div className="txt_field">
-                        <input
-                            type="canSave"
-                            required
-                            id="canSave"
-                            name="canSave"
-                            value={canSave}
-                            onChange={onChange}
-                            />
+                        <select id="canSaveMessages" name="canSaveMessages" onChange={onChange} defaultValue={canSaveMessages}>
+                            <option value="false">Desactivado</option>
+                            <option value="true">Activo</option>
+                        </select>
                         <label>Save Chats</label>
                     </div>
                     <div className="submit">
