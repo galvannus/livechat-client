@@ -24,13 +24,13 @@ const Chat = ({chat}) => {
 
     return(
         <div className="list_chats">
-            <div className="chat padding_left_10" onClick={ () => selectChat(chat.id) }>
+            <div className="chat padding_left_10" onClick={ () => selectChat(chat._id) }>
                 <div className="chat_text">
-                    <h1>{chat.name}</h1>
+                    <h1>{chat.user.name}</h1>
                     <p>Last message received</p>
                 </div>
             </div>
-            <button className="btn-close" onClick={ () => onClickDeleteChat(chat.id) }><i className="fa-solid fa-circle-xmark"></i></button>
+            <button className="btn-close" onClick={ () => onClickDeleteChat(chat._id) }><i className="fa-solid fa-circle-xmark"></i></button>
         </div>
     );
 }

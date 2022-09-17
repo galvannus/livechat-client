@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react';
 import chatContext from '../../context/chats/chatContext';
-
 import Chat from "./Chat";
 
 const ListChats = () => {
@@ -22,7 +21,7 @@ const ListChats = () => {
         
         chats.map(chat => (
             <Chat
-                key={chat.id}
+                key={chat._id}
                 chat={chat}
             />
         ))

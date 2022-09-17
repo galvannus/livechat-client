@@ -1,4 +1,5 @@
 import { useReducer } from "react";
+import axiosClient from "../../config/axios";
 import chatContext from "./chatContext";
 import chatReducer from "./chatReducer";
 import {
@@ -6,7 +7,8 @@ import {
     ADD_CHAT,
     VALIDATE_SEARCH_FORM,
     CURRENT_CHAT,
-    DELETE_CHAT
+    DELETE_CHAT,
+    SEARCH_USER
 } from "../../types";
 
 import { v4 as uuidv4 } from 'uuid';
@@ -15,17 +17,18 @@ import { v4 as uuidv4 } from 'uuid';
 const ChatState = props => {
 
     const chats = [
-        {id: "1", name: 'Alejandro Marcial'},
-        {id: "2", name: 'Cleo Patra'},
-        {id: "3", name: 'Nancy Pelosi'},
-        {id: "4", name: 'Otro Más'}
+        {_id: 1, user: {_id: "12", name: 'Alejandro Marcial'} },
+        {_id: 2, user: {_id: "2", name: 'Cleo Patra'}},
+        {_id: 3, user: {_id: "3", name: 'Nancy Pelosi'}},
+        {_id: 4, user: {_id: "4", name: 'Otro Más'}}
     ]
 
     //Initial state
     const initialState = {
         chats: [],
         errorsearchform: false,
-        chat: null
+        chat: null,
+        userlist: null
     }
 
     //Dispatch to execute actions
@@ -48,14 +51,22 @@ const ChatState = props => {
     }
 
     //Add new Chat
-    const addChat = chat  => {
-        chat.id = uuidv4();
+    const addChat = async chat  => {
 
-        //Insert the chat to the state
-        dispatch({
-            type: ADD_CHAT,
-            payload: chat
-        })
+        try {
+
+            const response = await axiosClient.post('/api/chats', chat);
+            console.log(response.data);
+
+            //Insert the chat to the state
+            dispatch({
+                type: ADD_CHAT,
+                payload: response.data
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     //Verify Errors of Search Form
@@ -81,17 +92,34 @@ const ChatState = props => {
         })
     }
 
+    const searchUsers = async name => {
+
+        try {
+            const response = await axiosClient.get('/api/users', {params: {name}});
+
+            dispatch({
+                type: SEARCH_USER,
+                payload: response.data.userList
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return(
         <chatContext.Provider
             value={{
                 chats: state.chats,
                 errorsearchform: state.errorsearchform,
                 chat: state.chat,
+                userlist: state.userlist,
                 getChats,
                 addChat,
                 showError,
                 currentChat,
-                delteChat
+                delteChat,
+                searchUsers
             }}
         >
             {props.children/*All data of this provider are sended to all consummers

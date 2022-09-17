@@ -3,7 +3,8 @@ import {
     ADD_CHAT,
     VALIDATE_SEARCH_FORM,
     CURRENT_CHAT,
-    DELETE_CHAT
+    DELETE_CHAT,
+    SEARCH_USER
 } from "../../types";
 
 //Functions to interact with the state
@@ -14,6 +15,11 @@ export default (state, action) => {
             return {
                 ...state,
                 chats: action.payload
+            }
+        case SEARCH_USER:
+            return {
+                ...state,
+                userlist: action.payload
             }
         case ADD_CHAT:
             return {
@@ -29,12 +35,12 @@ export default (state, action) => {
         case CURRENT_CHAT:
             return {
                 ...state,
-                chat: state.chats.filter(chat => chat.id === action.payload)
+                chat: state.chats.filter(chat => chat._id === action.payload)
             }
         case DELETE_CHAT:
             return {
                 ...state,
-                chats: state.chats.filter(chat => chat.id !== action.payload),
+                chats: state.chats.filter(chat => chat._id !== action.payload),
                 chat: null
             }
         

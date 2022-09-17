@@ -29,18 +29,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 5rem;
     position: relative;
 }
 
 .container-newchat{
-    width: 100%;
+    width: calc(90%);
+    position: relative;
+    margin: 1rem 0 1rem 0;
 }
 
 .search_input {
     padding-left: 1rem;
-    margin-left: 1rem;
-    width: 90%;
+    width: calc(100%);
     height: 3.5rem;
     border: 0.01rem solid var(--line-gray);
     border-radius: 0.5rem;
@@ -48,17 +48,24 @@
     background-color: var(--line-gray);
 }
 
-.search_container:hover .usersList{
-    display: block;
-}
-
 .usersList {
-    display: none;
     list-style-type: none;
     background-color: white;
     cursor: pointer;
+    width: calc(100%);
     position: absolute;
     z-index: 50;
+}
+
+.usersList {
+    line-height: 2rem;
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+.usersList  > li:hover {
+    background-color: var(--line-gray);
+    cursor: pointer;
 }
 
 .list_chats {
