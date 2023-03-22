@@ -4,10 +4,12 @@ import {
     VALIDATE_SEARCH_FORM,
     CURRENT_CHAT,
     DELETE_CHAT,
-    SEARCH_USER
+    SEARCH_USER,
+    GET_CURRENT_USER
 } from "../../types";
 
 //Functions to interact with the state
+// eslint-disable-next-line
 export default (state, action) => {
     switch(action.type) {
 
@@ -42,6 +44,11 @@ export default (state, action) => {
                 ...state,
                 chats: state.chats.filter(chat => chat._id !== action.payload),
                 chat: null
+            }
+        case GET_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: action.payload
             }
         
         default:

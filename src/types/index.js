@@ -4,6 +4,7 @@ export const DELETE_CHAT = 'DELETE_CHAT';
 export const VALIDATE_SEARCH_FORM = 'VALIDATE_SEARCH_FORM';
 export const CURRENT_CHAT = 'CURRENT_CHAT';
 export const SEARCH_USER = 'SEARCH_USER';
+export const GET_CURRENT_USER = 'GET_CURRENT_USER';
 
 export const MESSAGE_CHAT = 'MESSAGE_CHAT';
 export const ADD_MESSAGE = 'ADD_MESSAGE';

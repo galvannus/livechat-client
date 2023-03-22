@@ -8,7 +8,8 @@ import {
     VALIDATE_SEARCH_FORM,
     CURRENT_CHAT,
     DELETE_CHAT,
-    SEARCH_USER
+    SEARCH_USER,
+    GET_CURRENT_USER
 } from "../../types";
 
 import { v4 as uuidv4 } from 'uuid';
@@ -28,7 +29,8 @@ const ChatState = props => {
         chats: [],
         errorsearchform: false,
         chat: null,
-        userlist: null
+        userlist: null,
+        currentUser: null
     }
 
     //Dispatch to execute actions
@@ -43,11 +45,18 @@ const ChatState = props => {
     }*/
 
     //Get chats
-    const getChats = () => {
+    const getChats = async user => {
+        //console.log(user);
+
+        /*const response = await axiosClient.get('/api/chats', { params: user});
+        console.log(`Data in chat state: ${response.data}`);
+        */
         dispatch({
             type: GET_CHATS,
             payload: chats
-        })
+        });
+        
+        
     }
 
     //Add new Chat
@@ -73,7 +82,7 @@ const ChatState = props => {
     const showError = () => {
         dispatch({
             type: VALIDATE_SEARCH_FORM
-        })
+        });
     }
 
     //Select proyect when user clicked
@@ -81,7 +90,7 @@ const ChatState = props => {
         dispatch({
             type: CURRENT_CHAT,
             payload: chatId
-        })
+        });
     }
 
     //Delete Chat
@@ -89,7 +98,7 @@ const ChatState = props => {
         dispatch({
             type: DELETE_CHAT,
             payload: chatId
-        })
+        });
     }
 
     const searchUsers = async name => {
@@ -107,6 +116,17 @@ const ChatState = props => {
         }
     }
 
+    const getCurrentUser = async user => {
+        try {
+            dispatch({
+                type: GET_CURRENT_USER,
+                payload: user
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return(
         <chatContext.Provider
             value={{
@@ -119,7 +139,8 @@ const ChatState = props => {
                 showError,
                 currentChat,
                 delteChat,
-                searchUsers
+                searchUsers,
+                getCurrentUser
             }}
         >
             {props.children/*All data of this provider are sended to all consummers
