@@ -17,13 +17,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 const ChatState = props => {
 
-    const chats = [
-        {_id: 1, user: {_id: "12", name: 'Alejandro Marcial'} },
-        {_id: 2, user: {_id: "2", name: 'Cleo Patra'}},
-        {_id: 3, user: {_id: "3", name: 'Nancy Pelosi'}},
-        {_id: 4, user: {_id: "4", name: 'Otro Más'}}
-    ]
-
     //Initial state
     const initialState = {
         chats: [],
@@ -46,14 +39,13 @@ const ChatState = props => {
 
     //Get chats
     const getChats = async user => {
-        //console.log(user);
+        let userId = user._id;
 
-        /*const response = await axiosClient.get('/api/chats', { params: user});
-        console.log(`Data in chat state: ${response.data}`);
-        */
+        const response = await axiosClient.get('/api/chats', { params: {userId}});
+        
         dispatch({
             type: GET_CHATS,
-            payload: chats
+            payload: response.data
         });
         
         
@@ -94,11 +86,18 @@ const ChatState = props => {
     }
 
     //Delete Chat
-    const delteChat = chatId => {
-        dispatch({
-            type: DELETE_CHAT,
-            payload: chatId
-        });
+    const delteChat = async chatId => {
+        console.log(chatId);
+        //TODO: Send chatId and userId
+        try {
+            const response = await axiosClient.delete('/api/users', {params: {chatId}})
+            dispatch({
+                type: DELETE_CHAT,
+                payload: chatId
+            });
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const searchUsers = async name => {
@@ -134,6 +133,7 @@ const ChatState = props => {
                 errorsearchform: state.errorsearchform,
                 chat: state.chat,
                 userlist: state.userlist,
+                currentUser: state.currentUser,
                 getChats,
                 addChat,
                 showError,

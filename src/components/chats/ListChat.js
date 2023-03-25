@@ -7,7 +7,7 @@ const ListChats = () => {
 
     //Extract chats of initial state
     const chatsContext = useContext(chatContext);
-    const { chats, getChats, getCurrentUser } = chatsContext;
+    const { chats, currentUser, getChats, getCurrentUser } = chatsContext;
 
     const authContext = useContext(AuthContext);
     const { user } = authContext;
@@ -16,8 +16,10 @@ const ListChats = () => {
     useEffect( () => {
         //Insert user to state
         getCurrentUser(user);
-        //Get chats
-        getChats(user);
+        if(currentUser){
+            //Get chats
+            getChats(currentUser);
+        }
         // eslint-disable-next-line
     }, [user]);
 
@@ -32,6 +34,7 @@ const ListChats = () => {
             <Chat
                 key={chat._id}
                 chat={chat}
+                currentUser={currentUser}
             />
         ))
         
