@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import chatContext from '../../context/chats/chatContext';
 import messageContext from '../../context/messages/messageContext';
 

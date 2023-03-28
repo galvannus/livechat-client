@@ -12,8 +12,6 @@ import {
     GET_CURRENT_USER
 } from "../../types";
 
-import { v4 as uuidv4 } from 'uuid';
-
 
 const ChatState = props => {
 
@@ -86,14 +84,14 @@ const ChatState = props => {
     }
 
     //Delete Chat
-    const delteChat = async chatId => {
-        console.log(chatId);
-        //TODO: Send chatId and userId
+    const delteChat = async id => {
+
         try {
-            const response = await axiosClient.delete('/api/users', {params: {chatId}})
+            const response = await axiosClient.delete(`/api/chats/${id}`);
+            console.log(response.data);
             dispatch({
                 type: DELETE_CHAT,
-                payload: chatId
+                payload: response.data
             });
         } catch (error) {
             console.log(error)
