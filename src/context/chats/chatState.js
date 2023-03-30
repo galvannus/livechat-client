@@ -88,7 +88,7 @@ const ChatState = props => {
 
         try {
             const response = await axiosClient.delete(`/api/chats/${id}`);
-            console.log(response.data);
+            
             dispatch({
                 type: DELETE_CHAT,
                 payload: response.data
